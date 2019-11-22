@@ -6,22 +6,23 @@ import br.com.game.enumeration.Direction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class GameGourmet {
 
+    private static final int FRAME_SIZE_WIDTH = 300;
+    private static final int FRAME_SIZE_HEIGHT = 150;
     private static final String TITLE_GAME = "Game Gourmet";
     private static final String TITLE_CONFIRM = "Confirm";
+    private static final String TITLE_GIVE_UP = "Desisto";
+    private static final String TITLE_COMPLETE = "Complete";
     private static final String MESSAGE_START = "Pense um prato que gosta";
     private static final String MESSAGE_QUESTION = "O prato que você pensou é $?";
     private static final String MESSAGE_QUESTION_FOOD = "Qual prato você pensou?";
     private static final String MESSAGE_COMPLETE = "$1 é _______ mas $2 não.";
     private static final String MESSAGE_HIT = "Acertei de novo!";
     private static final String BUTTON_TEXT = "OK";
-    private static final int FRAME_SIZE_WIDTH = 300;
-    private static final int FRAME_SIZE_HEIGHT = 150;
 
     private Tree tree;
 
@@ -47,7 +48,10 @@ public class GameGourmet {
             switch (response) {
                 case JOptionPane.YES_OPTION:
                     if (current.getLeft() == null) {
-                        JOptionPane.showMessageDialog(null, MESSAGE_HIT);
+                        JOptionPane.showMessageDialog(null,
+                                MESSAGE_HIT,
+                                TITLE_GAME,
+                                JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         nodes.add(current.getLeft());
                     }
@@ -58,22 +62,23 @@ public class GameGourmet {
                         String attribute = null;
 
                         while (food == null || "".equals(food.trim())) {
-                            food = JOptionPane.showInputDialog(null, MESSAGE_QUESTION_FOOD);
+                            food = JOptionPane.showInputDialog(null,
+                                    MESSAGE_QUESTION_FOOD,
+                                    TITLE_GIVE_UP,
+                                    JOptionPane.QUESTION_MESSAGE);
                         }
 
                         while (attribute == null || "".equals(attribute.trim())) {
                             attribute = JOptionPane.showInputDialog(null,
-                                    MESSAGE_COMPLETE.replace("$1", food).replace("$2", current.getData()));
+                                    MESSAGE_COMPLETE.replace("$1", food).replace("$2", current.getData()),
+                                    TITLE_COMPLETE,
+                                    JOptionPane.QUESTION_MESSAGE);
                         }
 
                         String value = current.getData();
                         current.setData(attribute);
-                        //current.setLeft(new Node(food));
-                        //current.setRight(new Node(value));
                         this.tree.add(current, food, Direction.LEFT);
                         this.tree.add(current, value, Direction.RIGHT);
-
-                        this.tree.bfs();
                     } else {
                         nodes.add(current.getRight());
                     }
@@ -95,12 +100,7 @@ public class GameGourmet {
 
         JLabel label = new JLabel(MESSAGE_START);
         JButton button = new JButton(BUTTON_TEXT);
-        button.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                procedure();
-            }
-        });
+        button.addActionListener(event -> procedure());
 
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

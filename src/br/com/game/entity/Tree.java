@@ -43,7 +43,6 @@ public class Tree {
                 nodes.add(current.getRight());
             }
         }
-        System.out.println("--------------------");
     }
 
     public Node getRoot() {
