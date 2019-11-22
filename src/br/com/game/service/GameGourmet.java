@@ -39,13 +39,13 @@ public class GameGourmet {
 
         while (!nodes.isEmpty()) {
             Node current = nodes.remove();
-            int response = JOptionPane.showConfirmDialog(null,
+            int result = JOptionPane.showConfirmDialog(null,
                     MESSAGE_QUESTION.replace("$", current.getData()),
                     TITLE_CONFIRM,
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
 
-            switch (response) {
+            switch (result) {
                 case JOptionPane.YES_OPTION:
                     if (current.getLeft() == null) {
                         JOptionPane.showMessageDialog(null,
